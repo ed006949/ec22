@@ -254,11 +254,11 @@ type jnpConf struct {
 					Size            Int      `xml:"size,omitempty"`
 					Files           Int      `xml:"files,omitempty"`
 					NoWorldReadable IsExists `xml:"no-world-readable,omitempty"`
+					Flag            *struct {
+						JNPConfigFlags
+						Name String `xml:"name,omitempty"`
+					} `xml:"flag,omitempty"`
 				} `xml:"traceoptions,omitempty"`
-				Flag *struct {
-					JNPConfigFlags
-					Name String `xml:"name,omitempty"`
-				} `xml:"flag,omitempty"`
 				RespondBadSPI *struct {
 					JNPConfigFlags
 					MaxResponses Int `xml:"max-responses,omitempty"`
@@ -312,7 +312,169 @@ type jnpConf struct {
 			} `xml:"ike,omitempty"`
 			IPSec *struct {
 				JNPConfigFlags
+				Traceoptions *struct {
+					JNPConfigFlags
+					Flag *struct {
+						JNPConfigFlags
+						Name String `xml:"name,omitempty"`
+					} `xml:"flag,omitempty"`
+				} `xml:"traceoptions,omitempty"`
+				VPNMonitorOptions *struct {
+					JNPConfigFlags
+					Interval  Int `xml:"interval,omitempty"`
+					Threshold Int `xml:"threshold,omitempty"`
+				} `xml:"vpn-monitor-options,omitempty"`
+				Proposal []struct {
+					JNPConfigFlags
+					Name                    String `xml:"name,omitempty"`
+					Protocol                String `xml:"protocol,omitempty"`
+					AuthenticationAlgorithm String `xml:"authentication-algorithm,omitempty"`
+					EncryptionAlgorithm     String `xml:"encryption-algorithm,omitempty"`
+					LifetimeSeconds         Int    `xml:"lifetime-seconds,omitempty"`
+				} `xml:"proposal,omitempty"`
+				Policy []struct {
+					JNPConfigFlags
+					Name                  String `xml:"name,omitempty"`
+					PerfectForwardSecrecy *struct {
+						JNPConfigFlags
+						Keys String `xml:"keys,omitempty"`
+					} `xml:"perfect-forward-secrecy,omitempty"`
+					Proposals []String `xml:"proposals,omitempty"`
+				} `xml:"policy,omitempty"`
+				VPN *struct {
+					JNPConfigFlags
+					Name  String `xml:"name,omitempty"`
+					DFBit String `xml:"df-bit,omitempty"`
+					IKE   *struct {
+						JNPConfigFlags
+						Gateway     String `xml:"gateway,omitempty"`
+						IPSECPolicy String `xml:"ipsec-policy,omitempty"`
+					} `xml:"ike,omitempty"`
+					EstablishTunnels String `xml:"establish-tunnels,omitempty"`
+				} `xml:"vpn,omitempty"`
 			} `xml:"ipsec,omitempty"`
+			AddressBook []struct {
+				JNPConfigFlags
+				Name    String `xml:"name,omitempty"`
+				Address *struct {
+					JNPConfigFlags
+					Name     String `xml:"name,omitempty"`
+					IPPrefix String `xml:"ip-prefix,omitempty"`
+				} `xml:"address,omitempty"`
+				AddressSet *struct {
+					JNPConfigFlags
+					Name    String `xml:"name,omitempty"`
+					Address *struct {
+						JNPConfigFlags
+						Name String `xml:"name,omitempty"`
+					} `xml:"address,omitempty"`
+					AddressSet *struct {
+						JNPConfigFlags
+						Name String `xml:"name,omitempty"`
+					} `xml:"address-set,omitempty"`
+				} `xml:"address-set,omitempty"`
+			} `xml:"address-book,omitempty"`
+			ALG *struct {
+				JNPConfigFlags
+				DNS *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"dns,omitempty"`
+				FTP *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"ftp,omitempty"`
+				H323 *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"h323,omitempty"`
+				MGCP *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"mgcp,omitempty"`
+				MSRPC *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"msrpc,omitempty"`
+				SunRPC *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"sunrpc,omitempty"`
+				RSH *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"rsh,omitempty"`
+				RTSP *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"rtsp,omitempty"`
+				SCCP *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"sccp,omitempty"`
+				SIP *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"sip,omitempty"`
+				SQL *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"sql,omitempty"`
+				Talk *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"talk,omitempty"`
+				TFTP *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"tftp,omitempty"`
+				PPTP *struct {
+					JNPConfigFlags
+					Disable IsExists `xml:"disable,omitempty"`
+				} `xml:"pptp,omitempty"`
+			} `xml:"alg,omitempty"`
+			ApplicationTracking *struct {
+				JNPConfigFlags
+				Disable IsExists `xml:"disable,omitempty"`
+			} `xml:"application-tracking,omitempty"`
+			Flow *struct {
+				JNPConfigFlags
+				AllowDNSReply     IsExists `xml:"allow-dns-reply,omitempty"`
+				AllowEmbeddedICMP IsExists `xml:"allow-embedded-icmp,omitempty"`
+				TCPMSS            *struct {
+					JNPConfigFlags
+					AllTCP *struct {
+						JNPConfigFlags
+						MSS Int `xml:"mss,omitempty"`
+					} `xml:"all-tcp,omitempty"`
+					IPSecVPN *struct {
+						JNPConfigFlags
+						MSS Int `xml:"mss,omitempty"`
+					} `xml:"ipsec-vpn,omitempty"`
+					GREIn *struct {
+						JNPConfigFlags
+						MSS Int `xml:"mss,omitempty"`
+					} `xml:"gre-in,omitempty"`
+					GREOut *struct {
+						JNPConfigFlags
+						MSS Int `xml:"mss,omitempty"`
+					} `xml:"gre-out,omitempty"`
+				} `xml:"tcp-mss,omitempty"`
+				TCPSession *struct {
+					JNPConfigFlags
+					NoSynCheck         IsExists `xml:"no-syn-check,omitempty"`
+					NoSynCheckInTunnel IsExists `xml:"no-syn-check-in-tunnel,omitempty"`
+					NoSequenceCheck    IsExists `xml:"no-sequence-check,omitempty"`
+				} `xml:"tcp-session,omitempty"`
+				ForceIPReassembly IsExists `xml:"force-ip-reassembly,omitempty"`
+			} `xml:"flow,omitempty"`
+			Screen *struct {
+				JNPConfigFlags
+				Trap *struct {
+					JNPConfigFlags
+					Interval Int `xml:"interval,omitempty"`
+				} `xml:"trap,omitempty"`
+			} `xml:"screen,omitempty"`
 		} `xml:"security,omitempty"`
 	} `xml:"configuration,omitempty"`
 }

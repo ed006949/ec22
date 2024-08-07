@@ -110,6 +110,7 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 							return
 						}
 
+						return
 						// l.Z{l.M: interimXML.Configuration}.Informational()
 						//
 
