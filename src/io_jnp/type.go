@@ -1,32 +1,10 @@
-package main
+package io_jnp
 
 import (
 	"encoding/xml"
-
-	"ec22/src/l"
 )
 
-type xmlConf struct {
-	XMLName xml.Name          `xml:"conf"`
-	Daemon  *l.ControlType    `xml:"daemon,omitempty"`
-	Storage []*XMLConfStorage `xml:"storages>storage,omitempty"`
-}
-
-type XMLConfStorage struct {
-	Name string `xml:"name,attr,omitempty"`
-	Type string `xml:"type,attr,omitempty"`
-	Path string `xml:"path,attr,omitempty"`
-}
-
-type TrueIfExists bool
-type SiValue int
-
-type JNPConfigFlags struct {
-	Unsupported TrueIfExists `xml:"unsupported,attr,omitempty"`
-	Inactive    TrueIfExists `xml:"inactive,attr,omitempty"`
-}
-
-type jnpConf_22_4 struct {
+type JnpConf struct {
 	JNPConfigFlags
 	XMLName       xml.Name
 	Configuration *struct {
@@ -102,6 +80,7 @@ type jnpConf_22_4 struct {
 						SystemGeneratedCertificate IsExists `xml:"system-generated-certificate,omitempty"`
 					} `xml:"https,omitempty"`
 				} `xml:"web-management,omitempty"`
+				DHCPLocalServer SystemServicesDHCPLocalServer `xml:"dhcp-local-server,omitempty"`
 			} `xml:"services,omitempty"`
 			DomainName              String   `xml:"domain-name,omitempty"`
 			TimeZone                TimeZone `xml:"time-zone,omitempty"`
@@ -142,7 +121,7 @@ type jnpConf_22_4 struct {
 				JNPConfigFlags
 				Archive *struct {
 					JNPConfigFlags
-					Size            Int      `xml:"size,omitempty"`
+					Size            SiInt    `xml:"size,omitempty"`
 					Files           Int      `xml:"files,omitempty"`
 					NoWorldReadable IsExists `xml:"no-world-readable,omitempty"`
 					NoBinaryDate    IsExists `xml:"no-binary-date,omitempty"`
@@ -251,7 +230,7 @@ type jnpConf_22_4 struct {
 				Traceoptions *struct {
 					JNPConfigFlags
 					Filename        String   `xml:"filename,omitempty"`
-					Size            Int      `xml:"size,omitempty"`
+					Size            SiInt    `xml:"size,omitempty"`
 					Files           Int      `xml:"files,omitempty"`
 					NoWorldReadable IsExists `xml:"no-world-readable,omitempty"`
 					Flag            *struct {
@@ -376,62 +355,20 @@ type jnpConf_22_4 struct {
 			} `xml:"address-book,omitempty"`
 			ALG *struct {
 				JNPConfigFlags
-				DNS *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"dns,omitempty"`
-				FTP *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"ftp,omitempty"`
-				H323 *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"h323,omitempty"`
-				MGCP *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"mgcp,omitempty"`
-				MSRPC *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"msrpc,omitempty"`
-				SunRPC *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"sunrpc,omitempty"`
-				RSH *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"rsh,omitempty"`
-				RTSP *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"rtsp,omitempty"`
-				SCCP *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"sccp,omitempty"`
-				SIP *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"sip,omitempty"`
-				SQL *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"sql,omitempty"`
-				Talk *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"talk,omitempty"`
-				TFTP *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"tftp,omitempty"`
-				PPTP *struct {
-					JNPConfigFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"pptp,omitempty"`
+				DNS    ALG `xml:"dns,omitempty"`
+				FTP    ALG `xml:"ftp,omitempty"`
+				H323   ALG `xml:"h323,omitempty"`
+				MGCP   ALG `xml:"mgcp,omitempty"`
+				MSRPC  ALG `xml:"msrpc,omitempty"`
+				SunRPC ALG `xml:"sunrpc,omitempty"`
+				RSH    ALG `xml:"rsh,omitempty"`
+				RTSP   ALG `xml:"rtsp,omitempty"`
+				SCCP   ALG `xml:"sccp,omitempty"`
+				SIP    ALG `xml:"sip,omitempty"`
+				SQL    ALG `xml:"sql,omitempty"`
+				Talk   ALG `xml:"talk,omitempty"`
+				TFTP   ALG `xml:"tftp,omitempty"`
+				PPTP   ALG `xml:"pptp,omitempty"`
 			} `xml:"alg,omitempty"`
 			ApplicationTracking *struct {
 				JNPConfigFlags
@@ -443,22 +380,10 @@ type jnpConf_22_4 struct {
 				AllowEmbeddedICMP IsExists `xml:"allow-embedded-icmp,omitempty"`
 				TCPMSS            *struct {
 					JNPConfigFlags
-					AllTCP *struct {
-						JNPConfigFlags
-						MSS Int `xml:"mss,omitempty"`
-					} `xml:"all-tcp,omitempty"`
-					IPSecVPN *struct {
-						JNPConfigFlags
-						MSS Int `xml:"mss,omitempty"`
-					} `xml:"ipsec-vpn,omitempty"`
-					GREIn *struct {
-						JNPConfigFlags
-						MSS Int `xml:"mss,omitempty"`
-					} `xml:"gre-in,omitempty"`
-					GREOut *struct {
-						JNPConfigFlags
-						MSS Int `xml:"mss,omitempty"`
-					} `xml:"gre-out,omitempty"`
+					AllTCP   FlowMSS `xml:"all-tcp,omitempty"`
+					IPSecVPN FlowMSS `xml:"ipsec-vpn,omitempty"`
+					GREIn    FlowMSS `xml:"gre-in,omitempty"`
+					GREOut   FlowMSS `xml:"gre-out,omitempty"`
 				} `xml:"tcp-mss,omitempty"`
 				TCPSession *struct {
 					JNPConfigFlags
@@ -626,13 +551,13 @@ type jnpConf_22_4 struct {
 						JNPConfigFlags
 						HostInboundTraffic *struct {
 							JNPConfigFlags
-							SystemServices *struct {
+							SystemServices []struct {
 								JNPConfigFlags
-								Name []String `xml:"name,omitempty"`
+								Name String `xml:"name,omitempty"`
 							} `xml:"system-services,omitempty"`
-							Protocols *struct {
+							Protocols []struct {
 								JNPConfigFlags
-								Name []String `xml:"name,omitempty"`
+								Name String `xml:"name,omitempty"`
 							} `xml:"protocols,omitempty"`
 						} `xml:"host-inbound-traffic,omitempty"`
 					} `xml:"management,omitempty"`
@@ -643,18 +568,18 @@ type jnpConf_22_4 struct {
 					Screen             String `xml:"screen,omitempty"`
 					HostInboundTraffic *struct {
 						JNPConfigFlags
-						SystemServices *struct {
+						SystemServices []struct {
 							JNPConfigFlags
-							Name []String `xml:"name,omitempty"`
+							Name String `xml:"name,omitempty"`
 						} `xml:"system-services,omitempty"`
-						Protocols *struct {
+						Protocols []struct {
 							JNPConfigFlags
-							Name []String `xml:"name,omitempty"`
+							Name String `xml:"name,omitempty"`
 						} `xml:"protocols,omitempty"`
 					} `xml:"host-inbound-traffic,omitempty"`
-					Interfaces *struct {
+					Interfaces []struct {
 						JNPConfigFlags
-						Name []String `xml:"name,omitempty"`
+						Name String `xml:"name,omitempty"`
 					} `xml:"interfaces,omitempty"`
 				} `xml:"security-zone,omitempty"`
 			} `xml:"zones,omitempty"`
@@ -718,113 +643,34 @@ type jnpConf_22_4 struct {
 					Name String `xml:"name,omitempty"`
 				} `xml:"prefix-list-item,omitempty"`
 			} `xml:"prefix-list,omitempty"`
-			PolicyStatement []struct {
+			PolicyStatement PolicyStatementTerm `xml:"policy-statement,omitempty"`
+		} `xml:"policy-options,omitempty"`
+		RoutingInstances *struct {
+			JNPConfigFlags
+			Instance []struct {
 				JNPConfigFlags
-				Name String `xml:"name,omitempty"`
-				From struct {
-					JNPConfigFlags
-					Protocol         []String `xml:"protocol,omitempty"`
-					PrefixListFilter []struct {
-						JNPConfigFlags
-						ListName String   `xml:"list_name,omitempty"`
-						Exact    IsExists `xml:"exact,omitempty"`
-						Longer   IsExists `xml:"longer,omitempty"`
-						Orkonger IsExists `xml:"orlonger,omitempty"`
-					} `xml:"prefix-list-filter,omitempty"`
-				} `xml:"from,omitempty"`
-				Then *struct {
-					JNPConfigFlags
-					LoadBalance []struct {
-						JNPConfigFlags
-						PerPacket IsExists `xml:"per-packet,omitempty"`
-					} `xml:"load-balance,omitempty"`
-					Metric []struct {
-						JNPConfigFlags
-						Add    Int `xml:"add,omitempty"`
-						Metric Int `xml:"metric,omitempty"`
-					} `xml:"metric,omitempty"`
-					NextHop []struct {
-						JNPConfigFlags
-						Self IsExists `xml:"self,omitempty"`
-					} `xml:"next-hop,omitempty"`
-					Accept IsExists `xml:"accept,omitempty"`
-					Reject IsExists `xml:"reject,omitempty"`
-				} `xml:"then,omitempty"`
-				Term []struct {
+				Name           String         `xml:"name,omitempty"`
+				Description    String         `xml:"description,omitempty"`
+				InstanceType   String         `xml:"instance-type,omitempty"`
+				RoutingOptions RoutingOptions `xml:"routing-options,omitempty"`
+				Protocols      Protocols      `xml:"protocols,omitempty"`
+				Interface      []struct {
 					JNPConfigFlags
 					Name String `xml:"name,omitempty"`
-					From struct {
+				} `xml:"interface,omitempty"`
+				ForwardingOptions ForwardingOptions `xml:"forwarding-options,omitempty"`
+				System            *struct {
+					JNPConfigFlags
+					Services *struct {
 						JNPConfigFlags
-						Protocol         []String `xml:"protocol,omitempty"`
-						RouteType        []String `xml:"route-type,omitempty"`
-						PrefixListFilter []struct {
-							JNPConfigFlags
-							ListName String   `xml:"list_name,omitempty"`
-							Exact    IsExists `xml:"exact,omitempty"`
-							Longer   IsExists `xml:"longer,omitempty"`
-							Orkonger IsExists `xml:"orlonger,omitempty"`
-						} `xml:"prefix-list-filter,omitempty"`
-					} `xml:"from,omitempty"`
-					Then *struct {
-						JNPConfigFlags
-						LoadBalance []struct {
-							JNPConfigFlags
-							PerPacket IsExists `xml:"per-packet,omitempty"`
-						} `xml:"load-balance,omitempty"`
-						Metric []struct {
-							JNPConfigFlags
-							Add    Int `xml:"add,omitempty"`
-							Metric Int `xml:"metric,omitempty"`
-						} `xml:"metric,omitempty"`
-						NextHop []struct {
-							JNPConfigFlags
-							Self IsExists `xml:"self,omitempty"`
-						} `xml:"next-hop,omitempty"`
-						Accept IsExists `xml:"accept,omitempty"`
-						Reject IsExists `xml:"reject,omitempty"`
-					} `xml:"then,omitempty"`
-				} `xml:"term,omitempty"`
-			} `xml:"policy-statement,omitempty"`
-		} `xml:"policy-options,omitempty"`
+						DHCPLocalServer SystemServicesDHCPLocalServer `xml:"dhcp-local-server,omitempty"`
+					} `xml:"system-services,omitempty"`
+				} `xml:"system,omitempty"`
+				Access Access `xml:"access,omitempty"`
+			} `xml:"instance,omitempty"`
+		} `xml:"routing-instances,omitempty"`
+		RoutingOptions    RoutingOptions    `xml:"routing-options,omitempty"`
+		Protocols         Protocols         `xml:"protocols,omitempty"`
+		ForwardingOptions ForwardingOptions `xml:"forwarding-options,omitempty"`
 	} `xml:"configuration,omitempty"`
-}
-
-type Node struct {
-	XMLName xml.Name
-	Attrs   []xml.Attr `xml:",any,attr"`
-	Content []byte     `xml:",innerxml"`
-	Nodes   []Node     `xml:",any"`
-}
-
-type IsExists *struct {
-	JNPConfigFlags
-}
-type Int *struct {
-	JNPConfigFlags
-	Value SiValue `xml:",chardata"`
-}
-type String *struct {
-	JNPConfigFlags
-	Value string `xml:",chardata"`
-}
-type Name *struct {
-	JNPConfigFlags
-	Value string `xml:"name,omitempty"`
-}
-
-type EncryptedPassword *struct {
-	JNPConfigFlags
-	Value string `xml:",chardata"`
-}
-type Password *struct {
-	JNPConfigFlags
-	Value string `xml:",chardata"`
-}
-type TimeZone *struct {
-	JNPConfigFlags
-	Value string `xml:",chardata"`
-}
-type SSHPubKey *struct {
-	JNPConfigFlags
-	Value string `xml:",chardata"`
 }

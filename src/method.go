@@ -3,49 +3,16 @@ package main
 import (
 	"encoding/xml"
 	"io/fs"
+	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/docker/go-units"
+	"github.com/avfs/avfs"
 
+	"ec22/src/io_jnp"
 	"ec22/src/io_vfs"
 	"ec22/src/l"
 )
-
-func (r *TrueIfExists) UnmarshalXMLAttr(attr xml.Attr) error {
-	switch {
-	case len(attr.Value) != 0:
-		*r = true
-	default:
-		*r = false
-	}
-	return nil
-}
-func (r *TrueIfExists) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
-	switch *r {
-	case true:
-		return xml.Attr{
-			Name:  name,
-			Value: name.Local,
-		}, nil
-	default:
-		return xml.Attr{}, nil
-	}
-}
-
-func (r *SiValue) UnmarshalText(text []byte) error {
-	switch value, err := units.FromHumanSize(string(text)); {
-	case err != nil:
-		return err
-	default:
-		*r = SiValue(value)
-		return nil
-	}
-}
-
-func (r *SiValue) MarshalText() ([]byte, error) {
-	return []byte(units.HumanSize(float64(*r))), nil
-}
 
 func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 	var (
@@ -97,7 +64,7 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 					switch {
 					case strings.HasSuffix(name, ".xml"):
 						var (
-							interimXML = new(jnpConf)
+							interimXML = new(io_jnp.JnpConf)
 						)
 
 						switch data, err = vfsDB.VFS.ReadFile(name); {
@@ -106,6 +73,17 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 						}
 
 						switch err = xml.Unmarshal(data, interimXML); {
+						case err != nil:
+							return
+						}
+
+						data = []byte(xml.Header)
+						switch data, err = xml.MarshalIndent(interimXML, "", "\t"); {
+						case err != nil:
+							return
+						}
+
+						switch err = os.WriteFile("./tmp/test.xml", data, avfs.DefaultDirPerm); {
 						case err != nil:
 							return
 						}
