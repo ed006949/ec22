@@ -54,7 +54,7 @@ type JnpConf struct {
 				} `xml:"telnet,omitempty"`
 				NetConf *struct {
 					JNPConfigFlags
-					SSH *struct{}
+					SSH IsExists `xml:"ssh,omitempty"`
 				} `xml:"netconf,omitempty"`
 				WebManagement *struct {
 					JNPConfigFlags
@@ -74,6 +74,10 @@ type JnpConf struct {
 			ManagementInstance      IsExists `xml:"management-instance,omitempty"`
 			InternetOptions         *struct {
 				JNPConfigFlags
+				SourcePort *struct {
+					JNPConfigFlags
+					UpperLimit Int `xml:"upper-limit,omitempty"`
+				} `xml:"source-port,omitempty"`
 				TCPMSS Int `xml:"tcp-mss,omitempty"`
 			} `xml:"internet-options,omitempty"`
 			Ports *struct {
@@ -104,6 +108,7 @@ type JnpConf struct {
 						Name      String   `xml:"name,omitempty"`
 						Any       IsExists `xml:"any,omitempty"`
 						Notice    IsExists `xml:"notice,omitempty"`
+						Warning   IsExists `xml:"warning,omitempty"`
 						Emergency IsExists `xml:"emergency,omitempty"`
 					} `xml:"contents,omitempty"`
 				} `xml:"user,omitempty"`
@@ -621,8 +626,8 @@ type JnpConf struct {
 				Name           String         `xml:"name,omitempty"`
 				Description    String         `xml:"description,omitempty"`
 				InstanceType   String         `xml:"instance-type,omitempty"`
-				RoutingOptions RoutingOptions `xml:"routing-options,omitempty"`
 				Protocols      Protocols      `xml:"protocols,omitempty"`
+				RoutingOptions RoutingOptions `xml:"routing-options,omitempty"`
 				Interface      []struct {
 					JNPConfigFlags
 					Name String `xml:"name,omitempty"`
@@ -638,8 +643,8 @@ type JnpConf struct {
 				Access Access `xml:"access,omitempty"`
 			} `xml:"instance,omitempty"`
 		} `xml:"routing-instances,omitempty"`
-		RoutingOptions    RoutingOptions    `xml:"routing-options,omitempty"`
 		Protocols         Protocols         `xml:"protocols,omitempty"`
+		RoutingOptions    RoutingOptions    `xml:"routing-options,omitempty"`
 		ForwardingOptions ForwardingOptions `xml:"forwarding-options,omitempty"`
 	} `xml:"configuration,omitempty"`
 }

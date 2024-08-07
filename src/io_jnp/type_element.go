@@ -67,7 +67,7 @@ type FlowMSS *struct {
 type PolicyStatementTerm []struct {
 	JNPConfigFlags
 	Name String `xml:"name,omitempty"`
-	From struct {
+	From *struct {
 		JNPConfigFlags
 		Protocol         []String `xml:"protocol,omitempty"`
 		RouteType        []String `xml:"route-type,omitempty"`
@@ -108,9 +108,7 @@ type RoutingOptions *struct {
 		JNPConfigFlags
 		ASNumber Int `xml:"as-number,omitempty"`
 	} `xml:"autonomous-system,omitempty"`
-	InstanceExport []String `xml:"instance-export,omitempty"`
-	InstanceImport []String `xml:"instance-import,omitempty"`
-	Static         *struct {
+	Static *struct {
 		JNPConfigFlags
 		Route []struct {
 			JNPConfigFlags
@@ -124,6 +122,8 @@ type RoutingOptions *struct {
 			} `xml:"preference,omitempty"`
 		} `xml:"route,omitempty"`
 	} `xml:"static,omitempty"`
+	InstanceImport []String `xml:"instance-import,omitempty"`
+	InstanceExport []String `xml:"instance-export,omitempty"`
 }
 type Protocols *struct {
 	JNPConfigFlags
@@ -150,10 +150,10 @@ type Protocols *struct {
 				Export       []String `xml:"export,omitempty"`
 				PeerAS       String   `xml:"peer-as,omitempty"`
 			} `xml:"neighbor,omitempty"`
-			PrecisionTimers IsExists `xml:"precision-timers,omitempty"`
-			HoldTime        IsExists `xml:"hold-time,omitempty"`
-			LogUpdown       IsExists `xml:"log-updown,omitempty"`
 		} `xml:"group,omitempty"`
+		PrecisionTimers IsExists `xml:"precision-timers,omitempty"`
+		HoldTime        IsExists `xml:"hold-time,omitempty"`
+		LogUpdown       IsExists `xml:"log-updown,omitempty"`
 	} `xml:"bgp,omitempty"`
 }
 type Access *struct {

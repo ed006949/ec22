@@ -62,6 +62,7 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 				case fs.ModeSymlink:
 				case 0:
 					switch {
+					case strings.HasSuffix(name, "test.xml"):
 					case strings.HasSuffix(name, ".xml"):
 						var (
 							interimXML = new(io_jnp.JnpConf)
@@ -77,13 +78,13 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 							return
 						}
 
-						data = []byte(xml.Header)
 						switch data, err = xml.MarshalIndent(interimXML, "", "\t"); {
 						case err != nil:
 							return
 						}
+						data = append([]byte(xml.Header), data...)
 
-						switch err = os.WriteFile("./tmp/test.xml", data, avfs.DefaultDirPerm); {
+						switch err = os.WriteFile("./tmp/test.xml", data, avfs.DefaultFilePerm); {
 						case err != nil:
 							return
 						}
