@@ -49,59 +49,59 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 		return
 	}
 
-	for _, d := range vfsDB.List {
-		var (
-			findConf = func(name string, dirEntry fs.DirEntry, fnErr error) (err error) {
-				switch {
-				case fnErr != nil:
-					return fnErr
-				}
-
-				switch dirEntry.Type() {
-				case fs.ModeDir:
-				case fs.ModeSymlink:
-				case 0:
-					switch {
-					case strings.HasSuffix(name, "test.xml"):
-					case strings.HasSuffix(name, ".xml"):
-						var (
-							interimXML = new(io_jnp.JnpConf)
-						)
-
-						switch data, err = vfsDB.VFS.ReadFile(name); {
-						case err != nil:
-							return
-						}
-
-						switch err = xml.Unmarshal(data, interimXML); {
-						case err != nil:
-							return
-						}
-
-						switch data, err = xml.MarshalIndent(interimXML, "", "\t"); {
-						case err != nil:
-							return
-						}
-						data = append([]byte(xml.Header), data...)
-
-						switch err = os.WriteFile("./tmp/test.xml", data, avfs.DefaultFilePerm); {
-						case err != nil:
-							return
-						}
-
-						return
-						// l.Z{l.M: interimXML.Configuration}.Informational()
-						//
-
-					}
-				default:
-				}
-
-				return
+	var (
+		walkDirFunc = func(name string, dirEntry fs.DirEntry, fnErr error) (err error) {
+			switch {
+			case fnErr != nil:
+				return fnErr
 			}
-		)
 
-		switch err = vfsDB.VFS.WalkDir(d, findConf); {
+			switch dirEntry.Type() {
+			case fs.ModeDir:
+			case fs.ModeSymlink:
+			case 0:
+				switch {
+				case strings.HasSuffix(name, "test.xml"):
+				case strings.HasSuffix(name, ".xml"):
+					var (
+						interimXML = new(io_jnp.JnpConf)
+					)
+
+					switch data, err = vfsDB.VFS.ReadFile(name); {
+					case err != nil:
+						return
+					}
+
+					switch err = xml.Unmarshal(data, interimXML); {
+					case err != nil:
+						return
+					}
+
+					switch data, err = xml.MarshalIndent(interimXML, "", "\t"); {
+					case err != nil:
+						return
+					}
+					data = append([]byte(xml.Header), data...)
+
+					switch err = os.WriteFile("./tmp/test.xml", data, avfs.DefaultFilePerm); {
+					case err != nil:
+						return
+					}
+
+					return
+					// l.Z{l.M: interimXML.Configuration}.Informational()
+					//
+
+				}
+			default:
+			}
+
+			return
+		}
+	)
+	for _, d := range vfsDB.List {
+
+		switch err = vfsDB.VFS.WalkDir(d, walkDirFunc); {
 		case err != nil:
 			return
 		}

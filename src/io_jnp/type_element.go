@@ -1,79 +1,68 @@
 package io_jnp
 
-import (
-	"encoding/xml"
-)
-
 type TrueIfExists bool
 type SiValue int
 
-type JNPConfigFlags struct {
+type ConfigElementFlags struct {
 	Unsupported TrueIfExists `xml:"unsupported,attr,omitempty"`
 	Inactive    TrueIfExists `xml:"inactive,attr,omitempty"`
 }
 
-type Node struct {
-	XMLName xml.Name
-	Attrs   []xml.Attr `xml:",any,attr"`
-	Content []byte     `xml:",innerxml"`
-	Nodes   []Node     `xml:",any"`
-}
-
 type IsExists *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 }
 type SiInt *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Value SiValue `xml:",chardata"`
 }
 type Int *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Value int `xml:",chardata"`
 }
 type String *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Value string `xml:",chardata"`
 }
 type Name *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Value string `xml:"name,omitempty"`
 }
 
 type EncryptedPassword *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Value string `xml:",chardata"`
 }
 type Password *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Value string `xml:",chardata"`
 }
 type TimeZone *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Value string `xml:",chardata"`
 }
 type SSHPubKey *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Value string `xml:",chardata"`
 }
 
 type ALG *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Disable IsExists `xml:"disable,omitempty"`
 }
 type FlowMSS *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	MSS Int `xml:"mss,omitempty"`
 }
 type PolicyStatementTerm []struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Name String `xml:"name,omitempty"`
 	From *struct {
-		JNPConfigFlags
+		ConfigElementFlags
 		Protocol         []String `xml:"protocol,omitempty"`
 		RouteType        []String `xml:"route-type,omitempty"`
 		Instance         []String `xml:"instance,omitempty"`
 		PrefixListFilter []struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			ListName String   `xml:"list_name,omitempty"`
 			Exact    IsExists `xml:"exact,omitempty"`
 			Longer   IsExists `xml:"longer,omitempty"`
@@ -81,18 +70,18 @@ type PolicyStatementTerm []struct {
 		} `xml:"prefix-list-filter,omitempty"`
 	} `xml:"from,omitempty"`
 	Then *struct {
-		JNPConfigFlags
+		ConfigElementFlags
 		LoadBalance *struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			PerPacket IsExists `xml:"per-packet,omitempty"`
 		} `xml:"load-balance,omitempty"`
 		Metric *struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			Add    Int `xml:"add,omitempty"`
 			Metric Int `xml:"metric,omitempty"`
 		} `xml:"metric,omitempty"`
 		NextHop *struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			Self IsExists `xml:"self,omitempty"`
 		} `xml:"next-hop,omitempty"`
 		Accept IsExists `xml:"accept,omitempty"`
@@ -102,22 +91,22 @@ type PolicyStatementTerm []struct {
 	Term PolicyStatementTerm `xml:"term,omitempty"`
 }
 type RoutingOptions *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	RouterId         String `xml:"router-id,omitempty"`
 	AutonomousSystem *struct {
-		JNPConfigFlags
+		ConfigElementFlags
 		ASNumber Int `xml:"as-number,omitempty"`
 	} `xml:"autonomous-system,omitempty"`
 	Static *struct {
-		JNPConfigFlags
+		ConfigElementFlags
 		Route []struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			Name          String   `xml:"name,omitempty"`
 			NextTable     String   `xml:"next-table,omitempty"`
 			Reject        IsExists `xml:"reject,omitempty"`
 			NoReadvertise IsExists `xml:"no-readvertise,omitempty"`
 			Preference    *struct {
-				JNPConfigFlags
+				ConfigElementFlags
 				MetricValue Int `xml:"metric-value,omitempty"`
 			} `xml:"preference,omitempty"`
 		} `xml:"route,omitempty"`
@@ -126,23 +115,23 @@ type RoutingOptions *struct {
 	InstanceExport []String `xml:"instance-export,omitempty"`
 }
 type Protocols *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	BGP *struct {
-		JNPConfigFlags
+		ConfigElementFlags
 		PathSelection *struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			AlwaysCompareMed IsExists `xml:"always-compare-med,omitempty"`
 		} `xml:"path-selection,omitempty"`
 		Group []struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			Name      String `xml:"name,omitempty"`
 			Type      String `xml:"type,omitempty"`
 			Multipath *struct {
-				JNPConfigFlags
+				ConfigElementFlags
 				MultipleAS IsExists `xml:"multiple-as,omitempty"`
 			} `xml:"multipath,omitempty"`
 			Neighbor []struct {
-				JNPConfigFlags
+				ConfigElementFlags
 				Name         String   `xml:"name,omitempty"`
 				Description  String   `xml:"description,omitempty"`
 				LocalAddress String   `xml:"local-address,omitempty"`
@@ -157,35 +146,35 @@ type Protocols *struct {
 	} `xml:"bgp,omitempty"`
 }
 type Access *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	AddressAssignment *struct {
 		Pool []struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			Name   String `xml:"name,omitempty"`
 			Family *struct {
-				JNPConfigFlags
+				ConfigElementFlags
 				INet *struct {
-					JNPConfigFlags
+					ConfigElementFlags
 					Network String `xml:"network,omitempty"`
 					Range   []struct {
-						JNPConfigFlags
+						ConfigElementFlags
 						Name String `xml:"name,omitempty"`
 						Low  String `xml:"low,omitempty"`
 						High String `xml:"high,omitempty"`
 					} `xml:"range,omitempty"`
 					DHCPAttributes *struct {
-						JNPConfigFlags
+						ConfigElementFlags
 						NameServer []struct {
-							JNPConfigFlags
+							ConfigElementFlags
 							Name String `xml:"name,omitempty"`
 						} `xml:"name-server,omitempty"`
 						Router []struct {
-							JNPConfigFlags
+							ConfigElementFlags
 							Name String `xml:"name,omitempty"`
 						} `xml:"router,omitempty"`
 					} `xml:"dhcp-attributes,omitempty"`
 					Host []struct {
-						JNPConfigFlags
+						ConfigElementFlags
 						Name            String `xml:"name,omitempty"`
 						HardwareAddress String `xml:"hardware-address,omitempty"`
 						IPAddress       String `xml:"ip-address,omitempty"`
@@ -196,70 +185,70 @@ type Access *struct {
 	} `xml:"address-assignment,omitempty"`
 }
 type SystemServicesDHCPLocalServer *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Group *struct {
-		JNPConfigFlags
+		ConfigElementFlags
 		Name      String `xml:"name,omitempty"`
 		Interface []struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			Name String `xml:"name,omitempty"`
 		} `xml:"interface,omitempty"`
 	} `xml:"group,omitempty"`
 }
 type ForwardingOptions *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	DHCPRelay *struct {
-		JNPConfigFlags
+		ConfigElementFlags
 		ServerGroup *struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			ServerGroup []struct {
-				JNPConfigFlags
+				ConfigElementFlags
 				Name    String `xml:"name,omitempty"`
 				Address []struct {
-					JNPConfigFlags
+					ConfigElementFlags
 					Name String `xml:"name,omitempty"`
 				} `xml:"address,omitempty"`
 			} `xml:"server-group,omitempty"`
 		} `xml:"server-group,omitempty"`
 		Group *struct {
-			JNPConfigFlags
+			ConfigElementFlags
 			Name              String `xml:"name,omitempty"`
 			ActiveServerGroup []struct {
-				JNPConfigFlags
+				ConfigElementFlags
 				ActiveServerGroup String   `xml:"active-server-group,omitempty"`
 				AllowServerChange IsExists `xml:"allow-server-change,omitempty"`
 			} `xml:"active-server-group,omitempty"`
 			Interface []struct {
-				JNPConfigFlags
+				ConfigElementFlags
 				Name String `xml:"name,omitempty"`
 			} `xml:"interface,omitempty"`
 		} `xml:"group,omitempty"`
 	} `xml:"dhcp-relay,omitempty"`
 }
 type IKEIdentity *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Hostname *struct {
-		JNPConfigFlags
+		ConfigElementFlags
 		IdentityHostname String `xml:"identity-hostname,omitempty"`
 	} `xml:"hostname,omitempty"`
 }
 
 type AUXPort *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	LogOutOnDisconnect IsExists `xml:"log-out-on-disconnect,omitempty"`
 	Insecure           IsExists `xml:"insecure,omitempty"`
 	Type               String   `xml:"type,omitempty"`
 }
 type AUXAuth *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
 }
 type SSHPublicKey []struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	Name SSHPubKey `xml:"name,omitempty"`
 }
 type UserAuthentication *struct {
-	JNPConfigFlags
+	ConfigElementFlags
 	EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
 	SSHRSA            SSHPublicKey      `xml:"ssh-rsa,omitempty"`
 	SSHECDSA          SSHPublicKey      `xml:"ssh-ecdsa,omitempty"`
