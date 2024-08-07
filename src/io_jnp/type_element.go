@@ -233,3 +233,21 @@ type ForwardingOptions *struct {
 		} `xml:"group,omitempty"`
 	} `xml:"dhcp-relay,omitempty"`
 }
+type IKEIdentity *struct {
+	JNPConfigFlags
+	Hostname *struct {
+		JNPConfigFlags
+		IdentityHostname String `xml:"identity-hostname,omitempty"`
+	} `xml:"hostname,omitempty"`
+}
+
+type AUXPort *struct {
+	JNPConfigFlags
+	LogOutOnDisconnect IsExists `xml:"log-out-on-disconnect,omitempty"`
+	Insecure           IsExists `xml:"insecure,omitempty"`
+	Type               String   `xml:"type,omitempty"`
+}
+type AUXAuth *struct {
+	JNPConfigFlags
+	EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
+}

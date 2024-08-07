@@ -27,7 +27,7 @@ type JnpConf struct {
 					JNPConfigFlags
 					TriesBeforeDisconnect Int `xml:"tries-before-disconnect,omitempty"`
 				} `xml:"retry-options,omitempty"`
-				User *struct {
+				User []struct {
 					JNPConfigFlags
 					Name           String `xml:"name,omitempty"`
 					UId            Int    `xml:"uid,omitempty"`
@@ -92,28 +92,12 @@ type JnpConf struct {
 			} `xml:"internet-options,omitempty"`
 			Ports *struct {
 				JNPConfigFlags
-				Console *struct {
-					JNPConfigFlags
-					LogOutOnDisconnect IsExists `xml:"log-out-on-disconnect,omitempty"`
-					Insecure           IsExists `xml:"insecure,omitempty"`
-					Type               String   `xml:"type,omitempty"`
-				} `xml:"console,omitempty"`
-				Auxiliary *struct {
-					JNPConfigFlags
-					LogOutOnDisconnect IsExists `xml:"log-out-on-disconnect,omitempty"`
-					Insecure           IsExists `xml:"insecure,omitempty"`
-					Type               String   `xml:"type,omitempty"`
-				} `xml:"auxiliary,omitempty"`
+				Console   AUXPort `xml:"console,omitempty"`
+				Auxiliary AUXPort `xml:"auxiliary,omitempty"`
 			} `xml:"ports,omitempty"`
-			DiagPortAuthentication *struct {
-				JNPConfigFlags
-				EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
-			} `xml:"diag-port-authentication,omitempty"`
-			PicConsoleAuthentication *struct {
-				JNPConfigFlags
-				EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
-			} `xml:"pic-console-authentication,omitempty"`
-			NameServer []struct {
+			DiagPortAuthentication   AUXAuth `xml:"diag-port-authentication,omitempty"`
+			PicConsoleAuthentication AUXAuth `xml:"pic-console-authentication,omitempty"`
+			NameServer               []struct {
 				JNPConfigFlags
 				Name String `xml:"name,omitempty"`
 			} `xml:"name-server,omitempty"`
@@ -271,22 +255,10 @@ type JnpConf struct {
 						Interval   Int      `xml:"interval,omitempty"`
 						Threshold  Int      `xml:"threshold,omitempty"`
 					} `xml:"dead-peer-detection,omitempty"`
-					LocalIdentity *struct {
-						JNPConfigFlags
-						Hostname *struct {
-							JNPConfigFlags
-							IdentityHostname String `xml:"identity-hostname,omitempty"`
-						} `xml:"hostname,omitempty"`
-					} `xml:"local-identity,omitempty"`
-					RemoteIdentity *struct {
-						JNPConfigFlags
-						Hostname *struct {
-							JNPConfigFlags
-							IdentityHostname String `xml:"identity-hostname,omitempty"`
-						} `xml:"hostname,omitempty"`
-					} `xml:"remote-identity,omitempty"`
-					ExternalInterface String `xml:"external-interface,omitempty"`
-					Version           String `xml:"version,omitempty"`
+					LocalIdentity     IKEIdentity `xml:"local-identity,omitempty"`
+					RemoteIdentity    IKEIdentity `xml:"remote-identity,omitempty"`
+					ExternalInterface String      `xml:"external-interface,omitempty"`
+					Version           String      `xml:"version,omitempty"`
 				} `xml:"gateway,omitempty"`
 			} `xml:"ike,omitempty"`
 			IPSec *struct {
@@ -335,19 +307,19 @@ type JnpConf struct {
 			AddressBook []struct {
 				JNPConfigFlags
 				Name    String `xml:"name,omitempty"`
-				Address *struct {
+				Address []struct {
 					JNPConfigFlags
 					Name     String `xml:"name,omitempty"`
 					IPPrefix String `xml:"ip-prefix,omitempty"`
 				} `xml:"address,omitempty"`
-				AddressSet *struct {
+				AddressSet []struct {
 					JNPConfigFlags
 					Name    String `xml:"name,omitempty"`
-					Address *struct {
+					Address []struct {
 						JNPConfigFlags
 						Name String `xml:"name,omitempty"`
 					} `xml:"address,omitempty"`
-					AddressSet *struct {
+					AddressSet []struct {
 						JNPConfigFlags
 						Name String `xml:"name,omitempty"`
 					} `xml:"address-set,omitempty"`
