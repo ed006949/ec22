@@ -70,6 +70,8 @@ type PolicyStatementTerm []struct {
 	From struct {
 		JNPConfigFlags
 		Protocol         []String `xml:"protocol,omitempty"`
+		RouteType        []String `xml:"route-type,omitempty"`
+		Instance         []String `xml:"instance,omitempty"`
 		PrefixListFilter []struct {
 			JNPConfigFlags
 			ListName String   `xml:"list_name,omitempty"`
@@ -80,21 +82,22 @@ type PolicyStatementTerm []struct {
 	} `xml:"from,omitempty"`
 	Then *struct {
 		JNPConfigFlags
-		LoadBalance []struct {
+		LoadBalance *struct {
 			JNPConfigFlags
 			PerPacket IsExists `xml:"per-packet,omitempty"`
 		} `xml:"load-balance,omitempty"`
-		Metric []struct {
+		Metric *struct {
 			JNPConfigFlags
 			Add    Int `xml:"add,omitempty"`
 			Metric Int `xml:"metric,omitempty"`
 		} `xml:"metric,omitempty"`
-		NextHop []struct {
+		NextHop *struct {
 			JNPConfigFlags
 			Self IsExists `xml:"self,omitempty"`
 		} `xml:"next-hop,omitempty"`
 		Accept IsExists `xml:"accept,omitempty"`
 		Reject IsExists `xml:"reject,omitempty"`
+		Next   String   `xml:"next,omitempty"`
 	} `xml:"then,omitempty"`
 	Term PolicyStatementTerm `xml:"term,omitempty"`
 }
@@ -109,7 +112,7 @@ type RoutingOptions *struct {
 	InstanceImport []String `xml:"instance-import,omitempty"`
 	Static         *struct {
 		JNPConfigFlags
-		Route *struct {
+		Route []struct {
 			JNPConfigFlags
 			Name          String   `xml:"name,omitempty"`
 			NextTable     String   `xml:"next-table,omitempty"`
@@ -130,7 +133,7 @@ type Protocols *struct {
 			JNPConfigFlags
 			AlwaysCompareMed IsExists `xml:"always-compare-med,omitempty"`
 		} `xml:"path-selection,omitempty"`
-		Group *struct {
+		Group []struct {
 			JNPConfigFlags
 			Name      String `xml:"name,omitempty"`
 			Type      String `xml:"type,omitempty"`
@@ -138,7 +141,7 @@ type Protocols *struct {
 				JNPConfigFlags
 				MultipleAS IsExists `xml:"multiple-as,omitempty"`
 			} `xml:"multipath,omitempty"`
-			Neighbor *struct {
+			Neighbor []struct {
 				JNPConfigFlags
 				Name         String   `xml:"name,omitempty"`
 				Description  String   `xml:"description,omitempty"`
@@ -250,4 +253,14 @@ type AUXPort *struct {
 type AUXAuth *struct {
 	JNPConfigFlags
 	EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
+}
+type SSHPublicKey []struct {
+	JNPConfigFlags
+	Name SSHPubKey `xml:"name,omitempty"`
+}
+type UserAuthentication *struct {
+	JNPConfigFlags
+	EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
+	SSHRSA            SSHPublicKey      `xml:"ssh-rsa,omitempty"`
+	SSHECDSA          SSHPublicKey      `xml:"ssh-ecdsa,omitempty"`
 }

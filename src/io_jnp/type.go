@@ -12,16 +12,9 @@ type JnpConf struct {
 		Version String `xml:"version,omitempty"`
 		System  *struct {
 			JNPConfigFlags
-			HostName           String `xml:"host-name,omitempty"`
-			RootAuthentication *struct {
-				JNPConfigFlags
-				EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
-				SSHRSA            []struct {
-					JNPConfigFlags
-					Name SSHPubKey `xml:"name,omitempty"`
-				} `xml:"ssh-rsa,omitempty"`
-			} `xml:"root-authentication,omitempty"`
-			Login *struct {
+			HostName           String             `xml:"host-name,omitempty"`
+			RootAuthentication UserAuthentication `xml:"root-authentication,omitempty"`
+			Login              *struct {
 				JNPConfigFlags
 				RetryOptions *struct {
 					JNPConfigFlags
@@ -29,17 +22,10 @@ type JnpConf struct {
 				} `xml:"retry-options,omitempty"`
 				User []struct {
 					JNPConfigFlags
-					Name           String `xml:"name,omitempty"`
-					UId            Int    `xml:"uid,omitempty"`
-					Class          String `xml:"class,omitempty"`
-					Authentication *struct {
-						JNPConfigFlags
-						EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
-						SSHRSA            []struct {
-							JNPConfigFlags
-							Name SSHPubKey `xml:"name,omitempty"`
-						} `xml:"ssh-rsa,omitempty"`
-					} `xml:"authentication,omitempty"`
+					Name           String             `xml:"name,omitempty"`
+					UId            Int                `xml:"uid,omitempty"`
+					Class          String             `xml:"class,omitempty"`
+					Authentication UserAuthentication `xml:"authentication,omitempty"`
 				} `xml:"user,omitempty"`
 				Password *struct {
 					JNPConfigFlags
@@ -62,7 +48,7 @@ type JnpConf struct {
 					LogKeyChanges            IsExists `xml:"log-key-changes,omitempty"`
 					ConnectionLimit          Int      `xml:"connection-limit,omitempty"`
 					RateLimit                Int      `xml:"rate-limit,omitempty"`
-				}
+				} `xml:"ssh,omitempty"`
 				Telnet *struct {
 					JNPConfigFlags
 				} `xml:"telnet,omitempty"`
@@ -74,7 +60,7 @@ type JnpConf struct {
 					JNPConfigFlags
 					HTTP *struct {
 						JNPConfigFlags
-					} `xml:"http,omitempty"`
+					} `xml:"undocumented>http,omitempty"`
 					HTTPS *struct {
 						JNPConfigFlags
 						SystemGeneratedCertificate IsExists `xml:"system-generated-certificate,omitempty"`
@@ -108,7 +94,7 @@ type JnpConf struct {
 					Size            SiInt    `xml:"size,omitempty"`
 					Files           Int      `xml:"files,omitempty"`
 					NoWorldReadable IsExists `xml:"no-world-readable,omitempty"`
-					NoBinaryDate    IsExists `xml:"no-binary-date,omitempty"`
+					NoBinaryData    IsExists `xml:"no-binary-data,omitempty"`
 				} `xml:"archive,omitempty"`
 				User []struct {
 					JNPConfigFlags
@@ -179,10 +165,10 @@ type JnpConf struct {
 					Name    String   `xml:"name,omitempty"`
 					Disable IsExists `xml:"disable,omitempty"`
 				} `xml:"daemon-process,omitempty"`
-				SMTDPService *struct {
+				SMTPDservice *struct {
 					JNPConfigFlags
 					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"smtdp-service,omitempty"`
+				} `xml:"smtpd-service,omitempty"`
 			} `xml:"processes,omitempty"`
 			NTP *struct {
 				JNPConfigFlags
@@ -206,18 +192,27 @@ type JnpConf struct {
 				UseActiveChildMacOnReth          IsExists `xml:"use-active-child-mac-on-reth,omitempty"`
 			} `xml:"cluster,omitempty"`
 		} `xml:"chassis,omitempty"`
+		Services *struct {
+			JNPConfigFlags
+			ApplicationIdentification *struct {
+				JNPConfigFlags
+				NoApplicationIdentification IsExists `xml:"undocumented>no-application-identification,omitempty"`
+			} `xml:"application-identification,omitempty"`
+		} `xml:"services,omitempty"`
 		Security *struct {
 			JNPConfigFlags
-			KeyProtection IsExists `xml:"key-protection,omitempty"`
+			KeyProtection IsExists `xml:"undocumented>key-protection,omitempty"`
 			IKE           *struct {
 				JNPConfigFlags
 				Traceoptions *struct {
 					JNPConfigFlags
-					Filename        String   `xml:"filename,omitempty"`
-					Size            SiInt    `xml:"size,omitempty"`
-					Files           Int      `xml:"files,omitempty"`
-					NoWorldReadable IsExists `xml:"no-world-readable,omitempty"`
-					Flag            *struct {
+					File *struct {
+						Filename        String   `xml:"filename,omitempty"`
+						Size            SiInt    `xml:"size,omitempty"`
+						Files           Int      `xml:"files,omitempty"`
+						NoWorldReadable IsExists `xml:"no-world-readable,omitempty"`
+					} `xml:"file,omitempty"`
+					Flag *struct {
 						JNPConfigFlags
 						Name String `xml:"name,omitempty"`
 					} `xml:"flag,omitempty"`
@@ -292,11 +287,12 @@ type JnpConf struct {
 					} `xml:"perfect-forward-secrecy,omitempty"`
 					Proposals []String `xml:"proposals,omitempty"`
 				} `xml:"policy,omitempty"`
-				VPN *struct {
+				VPN []struct {
 					JNPConfigFlags
-					Name  String `xml:"name,omitempty"`
-					DFBit String `xml:"df-bit,omitempty"`
-					IKE   *struct {
+					Name          String `xml:"name,omitempty"`
+					BindInterface String `xml:"bind-interface,omitempty"`
+					DFBit         String `xml:"df-bit,omitempty"`
+					IKE           *struct {
 						JNPConfigFlags
 						Gateway     String `xml:"gateway,omitempty"`
 						IPSECPolicy String `xml:"ipsec-policy,omitempty"`
@@ -378,6 +374,7 @@ type JnpConf struct {
 						JNPConfigFlags
 						IPSweep *struct {
 							JNPConfigFlags
+							Threshold IsExists `xml:"threshold,omitempty"`
 						} `xml:"ip-sweep,omitempty"`
 						Fragment IsExists `xml:"fragment,omitempty"`
 						Large    IsExists `xml:"large,omitempty"`
@@ -636,7 +633,7 @@ type JnpConf struct {
 					Services *struct {
 						JNPConfigFlags
 						DHCPLocalServer SystemServicesDHCPLocalServer `xml:"dhcp-local-server,omitempty"`
-					} `xml:"system-services,omitempty"`
+					} `xml:"services,omitempty"`
 				} `xml:"system,omitempty"`
 				Access Access `xml:"access,omitempty"`
 			} `xml:"instance,omitempty"`
