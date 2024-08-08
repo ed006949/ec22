@@ -38,15 +38,15 @@ func (r *SiIntValue) UnmarshalText(text []byte) error {
 		return nil
 	}
 }
-
 func (r *SiIntValue) MarshalText() ([]byte, error) {
 	return []byte(units.HumanSize(float64(*r))), nil
 }
 
 func (r *TimeZoneValue) UnmarshalText(text []byte) error {
 	var (
-		err, err2 error
-		value     *time.Location
+		err        error
+		interimErr error
+		value      *time.Location
 	)
 
 	switch value, err = time.LoadLocation(string(text)); {
@@ -55,15 +55,14 @@ func (r *TimeZoneValue) UnmarshalText(text []byte) error {
 		return nil
 	}
 
-	switch value, err2 = time.LoadLocation("Etc/" + string(text)); {
-	case err2 != nil:
-		return err // return original error
-	default:
+	switch value, interimErr = time.LoadLocation("Etc/" + string(text)); {
+	case interimErr == nil:
 		*r = TimeZoneValue(*value)
 		return nil
 	}
-}
 
+	return err // return original error
+}
 func (r *TimeZoneValue) MarshalText() ([]byte, error) {
 	var (
 		timeLocation = time.Location(*r)
