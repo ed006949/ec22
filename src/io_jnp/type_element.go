@@ -33,10 +33,13 @@ type String *struct {
 	Value string `xml:",chardata"`
 }
 
+// EncryptedPassword indicates that password can only be encrypted
 type EncryptedPassword *struct {
 	ConfigElementFlags
 	Value string `xml:",chardata"`
 }
+
+// Password indicates that password can be either clear text or encrypted
 type Password *struct {
 	ConfigElementFlags
 	Value string `xml:",chardata"`
@@ -257,4 +260,19 @@ type UserAuthentication *struct {
 	EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
 	SSHRSA            SSHPublicKeyName  `xml:"ssh-rsa,omitempty"`
 	SSHECDSA          SSHPublicKeyName  `xml:"ssh-ecdsa,omitempty"`
+}
+type SyslogTargets []struct {
+	ConfigElementFlags
+	Name     String `xml:"name,omitempty"`
+	Contents []struct {
+		ConfigElementFlags
+		Name      String   `xml:"name,omitempty"`
+		Any       IsExists `xml:"any,omitempty"`
+		Notice    IsExists `xml:"notice,omitempty"`
+		Emergency IsExists `xml:"emergency,omitempty"`
+	} `xml:"contents,omitempty"`
+	StructuredData *struct {
+		ConfigElementFlags
+		Brief IsExists `xml:"brief,omitempty"`
+	} `xml:"structured-data,omitempty"`
 }

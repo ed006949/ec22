@@ -116,48 +116,9 @@ type Juniper_vSRX_22 struct {
 					NoWorldReadable IsExists `xml:"no-world-readable,omitempty"`
 					NoBinaryData    IsExists `xml:"no-binary-data,omitempty"`
 				} `xml:"archive,omitempty"`
-				User []struct {
-					ConfigElementFlags
-					Name     String `xml:"name,omitempty"`
-					Contents []struct {
-						ConfigElementFlags
-						Name      String   `xml:"name,omitempty"`
-						Any       IsExists `xml:"any,omitempty"`
-						Notice    IsExists `xml:"notice,omitempty"`
-						Warning   IsExists `xml:"warning,omitempty"`
-						Emergency IsExists `xml:"emergency,omitempty"`
-					} `xml:"contents,omitempty"`
-				} `xml:"user,omitempty"`
-				Host []struct {
-					ConfigElementFlags
-					Name     String `xml:"name,omitempty"`
-					Contents []struct {
-						ConfigElementFlags
-						Name      String   `xml:"name,omitempty"`
-						Any       IsExists `xml:"any,omitempty"`
-						Notice    IsExists `xml:"notice,omitempty"`
-						Emergency IsExists `xml:"emergency,omitempty"`
-					} `xml:"contents,omitempty"`
-					StructuredData *struct {
-						ConfigElementFlags
-						Brief IsExists `xml:"brief,omitempty"`
-					} `xml:"structured-data,omitempty"`
-				} `xml:"host,omitempty"`
-				File []struct {
-					ConfigElementFlags
-					Name     String `xml:"name,omitempty"`
-					Contents []struct {
-						ConfigElementFlags
-						Name      String   `xml:"name,omitempty"`
-						Any       IsExists `xml:"any,omitempty"`
-						Notice    IsExists `xml:"notice,omitempty"`
-						Emergency IsExists `xml:"emergency,omitempty"`
-					} `xml:"contents,omitempty"`
-					StructuredData *struct {
-						ConfigElementFlags
-						Brief IsExists `xml:"brief,omitempty"`
-					} `xml:"structured-data,omitempty"`
-				} `xml:"file,omitempty"`
+				User       SyslogTargets `xml:"user,omitempty"`
+				Host       SyslogTargets `xml:"host,omitempty"`
+				File       SyslogTargets `xml:"file,omitempty"`
 				TimeFormat *struct {
 					ConfigElementFlags
 					Year        IsExists `xml:"year,omitempty"`
