@@ -4,7 +4,23 @@ import (
 	"encoding/xml"
 )
 
-type JnpConf struct {
+// Juniper - Junos map
+type Juniper struct {
+	EX struct {
+	}
+	SRX struct {
+		V12_1 struct{ Conf *Juniper_vSRX_22 }
+		V12_4 struct{ Conf *Juniper_vSRX_22 }
+		V20   struct{ Conf *Juniper_vSRX_22 }
+		V22   struct{ Conf *Juniper_vSRX_22 }
+	}
+	VSRX struct {
+		V20 struct{ Conf *Juniper_vSRX_22 }
+		V22 struct{ Conf *Juniper_vSRX_22 }
+	}
+}
+
+type Juniper_vSRX_22 struct {
 	ConfigElementFlags
 	XMLName       xml.Name
 	Configuration *struct {
@@ -82,11 +98,11 @@ type JnpConf struct {
 			} `xml:"internet-options,omitempty"`
 			Ports *struct {
 				ConfigElementFlags
-				Console   AUXPort `xml:"console,omitempty"`
-				Auxiliary AUXPort `xml:"auxiliary,omitempty"`
+				Console   AUXPortConfiguration `xml:"console,omitempty"`
+				Auxiliary AUXPortConfiguration `xml:"auxiliary,omitempty"`
 			} `xml:"ports,omitempty"`
-			DiagPortAuthentication   AUXAuth `xml:"diag-port-authentication,omitempty"`
-			PicConsoleAuthentication AUXAuth `xml:"pic-console-authentication,omitempty"`
+			DiagPortAuthentication   AUXPortAuthentication `xml:"diag-port-authentication,omitempty"`
+			PicConsoleAuthentication AUXPortAuthentication `xml:"pic-console-authentication,omitempty"`
 			NameServer               []struct {
 				ConfigElementFlags
 				Name String `xml:"name,omitempty"`
@@ -170,10 +186,7 @@ type JnpConf struct {
 					Name    String   `xml:"name,omitempty"`
 					Disable IsExists `xml:"disable,omitempty"`
 				} `xml:"daemon-process,omitempty"`
-				SMTPDservice *struct {
-					ConfigElementFlags
-					Disable IsExists `xml:"disable,omitempty"`
-				} `xml:"smtpd-service,omitempty"`
+				SMTPDservice IsDisable `xml:"smtpd-service,omitempty"`
 			} `xml:"processes,omitempty"`
 			NTP *struct {
 				ConfigElementFlags
@@ -328,26 +341,23 @@ type JnpConf struct {
 			} `xml:"address-book,omitempty"`
 			ALG *struct {
 				ConfigElementFlags
-				DNS    ALG `xml:"dns,omitempty"`
-				FTP    ALG `xml:"ftp,omitempty"`
-				H323   ALG `xml:"h323,omitempty"`
-				MGCP   ALG `xml:"mgcp,omitempty"`
-				MSRPC  ALG `xml:"msrpc,omitempty"`
-				SunRPC ALG `xml:"sunrpc,omitempty"`
-				RSH    ALG `xml:"rsh,omitempty"`
-				RTSP   ALG `xml:"rtsp,omitempty"`
-				SCCP   ALG `xml:"sccp,omitempty"`
-				SIP    ALG `xml:"sip,omitempty"`
-				SQL    ALG `xml:"sql,omitempty"`
-				Talk   ALG `xml:"talk,omitempty"`
-				TFTP   ALG `xml:"tftp,omitempty"`
-				PPTP   ALG `xml:"pptp,omitempty"`
+				DNS    IsDisable `xml:"dns,omitempty"`
+				FTP    IsDisable `xml:"ftp,omitempty"`
+				H323   IsDisable `xml:"h323,omitempty"`
+				MGCP   IsDisable `xml:"mgcp,omitempty"`
+				MSRPC  IsDisable `xml:"msrpc,omitempty"`
+				SunRPC IsDisable `xml:"sunrpc,omitempty"`
+				RSH    IsDisable `xml:"rsh,omitempty"`
+				RTSP   IsDisable `xml:"rtsp,omitempty"`
+				SCCP   IsDisable `xml:"sccp,omitempty"`
+				SIP    IsDisable `xml:"sip,omitempty"`
+				SQL    IsDisable `xml:"sql,omitempty"`
+				Talk   IsDisable `xml:"talk,omitempty"`
+				TFTP   IsDisable `xml:"tftp,omitempty"`
+				PPTP   IsDisable `xml:"pptp,omitempty"`
 			} `xml:"alg,omitempty"`
-			ApplicationTracking *struct {
-				ConfigElementFlags
-				Disable IsExists `xml:"disable,omitempty"`
-			} `xml:"application-tracking,omitempty"`
-			Flow *struct {
+			ApplicationTracking IsDisable `xml:"application-tracking,omitempty"`
+			Flow                *struct {
 				ConfigElementFlags
 				AllowDNSReply     IsExists `xml:"allow-dns-reply,omitempty"`
 				AllowEmbeddedICMP IsExists `xml:"allow-embedded-icmp,omitempty"`

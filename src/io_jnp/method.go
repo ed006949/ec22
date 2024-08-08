@@ -2,6 +2,8 @@ package io_jnp
 
 import (
 	"encoding/xml"
+	"regexp"
+	"time"
 
 	"github.com/docker/go-units"
 )
@@ -27,16 +29,44 @@ func (r *TrueIfExists) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
 	}
 }
 
-func (r *SiValue) UnmarshalText(text []byte) error {
+func (r *SiIntValue) UnmarshalText(text []byte) error {
 	switch value, err := units.FromHumanSize(string(text)); {
 	case err != nil:
 		return err
 	default:
-		*r = SiValue(value)
+		*r = SiIntValue(value)
 		return nil
 	}
 }
 
-func (r *SiValue) MarshalText() ([]byte, error) {
+func (r *SiIntValue) MarshalText() ([]byte, error) {
 	return []byte(units.HumanSize(float64(*r))), nil
+}
+
+func (r *TimeZoneValue) UnmarshalText(text []byte) error {
+	var (
+		err, err2 error
+		value     *time.Location
+	)
+
+	switch value, err = time.LoadLocation(string(text)); {
+	case err == nil:
+		*r = TimeZoneValue(*value)
+		return nil
+	}
+
+	switch value, err2 = time.LoadLocation("Etc/" + string(text)); {
+	case err2 != nil:
+		return err // return original error
+	default:
+		*r = TimeZoneValue(*value)
+		return nil
+	}
+}
+
+func (r *TimeZoneValue) MarshalText() ([]byte, error) {
+	var (
+		timeLocation = time.Location(*r)
+	)
+	return regexp.MustCompile("^Etc/").ReplaceAll([]byte(timeLocation.String()), nil), nil
 }

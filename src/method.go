@@ -64,7 +64,7 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 				case strings.HasSuffix(name, "test.xml"):
 				case strings.HasSuffix(name, ".xml"):
 					var (
-						interimXML = new(io_jnp.JnpConf)
+						interimXML = new(io_jnp.Juniper_vSRX_22)
 					)
 
 					switch data, err = vfsDB.VFS.ReadFile(name); {

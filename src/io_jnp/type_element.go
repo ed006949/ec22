@@ -1,11 +1,20 @@
 package io_jnp
 
+import (
+	"time"
+)
+
 type TrueIfExists bool
-type SiValue int
+type SiIntValue int
+type TimeZoneValue time.Location
+
+// type MinVersionValue string
 
 type ConfigElementFlags struct {
 	Unsupported TrueIfExists `xml:"unsupported,attr,omitempty"`
 	Inactive    TrueIfExists `xml:"inactive,attr,omitempty"`
+	MinVersion  string       `xml:"-"`
+	// MinVersion  MinVersionValue `xml:"-"`
 }
 
 type IsExists *struct {
@@ -13,7 +22,7 @@ type IsExists *struct {
 }
 type SiInt *struct {
 	ConfigElementFlags
-	Value SiValue `xml:",chardata"`
+	Value SiIntValue `xml:",chardata"`
 }
 type Int *struct {
 	ConfigElementFlags
@@ -22,10 +31,6 @@ type Int *struct {
 type String *struct {
 	ConfigElementFlags
 	Value string `xml:",chardata"`
-}
-type Name *struct {
-	ConfigElementFlags
-	Value string `xml:"name,omitempty"`
 }
 
 type EncryptedPassword *struct {
@@ -38,14 +43,14 @@ type Password *struct {
 }
 type TimeZone *struct {
 	ConfigElementFlags
-	Value string `xml:",chardata"`
+	Value TimeZoneValue `xml:",chardata"`
 }
 type SSHPubKey *struct {
 	ConfigElementFlags
 	Value string `xml:",chardata"`
 }
 
-type ALG *struct {
+type IsDisable *struct {
 	ConfigElementFlags
 	Disable IsExists `xml:"disable,omitempty"`
 }
@@ -233,23 +238,23 @@ type IKEIdentity *struct {
 	} `xml:"hostname,omitempty"`
 }
 
-type AUXPort *struct {
+type AUXPortConfiguration *struct {
 	ConfigElementFlags
 	LogOutOnDisconnect IsExists `xml:"log-out-on-disconnect,omitempty"`
 	Insecure           IsExists `xml:"insecure,omitempty"`
 	Type               String   `xml:"type,omitempty"`
 }
-type AUXAuth *struct {
+type AUXPortAuthentication *struct {
 	ConfigElementFlags
 	EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
 }
-type SSHPublicKey []struct {
+type SSHPublicKeyName []struct {
 	ConfigElementFlags
 	Name SSHPubKey `xml:"name,omitempty"`
 }
 type UserAuthentication *struct {
 	ConfigElementFlags
 	EncryptedPassword EncryptedPassword `xml:"encrypted-password,omitempty"`
-	SSHRSA            SSHPublicKey      `xml:"ssh-rsa,omitempty"`
-	SSHECDSA          SSHPublicKey      `xml:"ssh-ecdsa,omitempty"`
+	SSHRSA            SSHPublicKeyName  `xml:"ssh-rsa,omitempty"`
+	SSHECDSA          SSHPublicKeyName  `xml:"ssh-ecdsa,omitempty"`
 }
