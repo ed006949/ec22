@@ -7,6 +7,8 @@ import (
 
 // ApplyGroup         Names  `xml:"apply_group"`
 
+type Version uint
+
 type BuiltInElements struct {
 	RIName      string
 	ZoneName    string
@@ -25,10 +27,10 @@ type ID struct {
 	AS         uint32 `xml:"as,attr"`
 }
 type Equipment struct {
-	Vendor    string `xml:"vendor,attr"`
-	Model     string `xml:"model,attr"`
-	OSVersion string `xml:"os_version,attr"`
-	Mode      string `xml:"mode,attr"`
+	Vendor    string  `xml:"vendor,attr"`
+	Model     string  `xml:"model,attr"`
+	OSVersion Version `xml:"os_version,attr"`
+	Mode      string  `xml:"mode,attr"`
 }
 type TILimits struct {
 	TIUnitMin uint16 `xml:"ti_unit_min,attr"`
