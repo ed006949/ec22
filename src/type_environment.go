@@ -31,6 +31,8 @@ type Equipment struct {
 	Model     string    `xml:"model,attr"`
 	OSVersion l.Version `xml:"os_version,attr"`
 	Mode      string    `xml:"mode,attr"`
+	SN        string    `xml:"sn,attr"`
+	OOB       string    `xml:"if_unit,attr"`
 }
 type TILimits struct {
 	TIUnitMin uint16 `xml:"ti_unit_min,attr"`
@@ -90,7 +92,7 @@ type SecurityPolicyGlobal []struct {
 }
 
 type Environment struct {
-	XMLName xml.Name  /*`xml:"conf"`*/
+	XMLName xml.Name
 	Version l.Version `xml:"version,attr"`
 	ID
 
