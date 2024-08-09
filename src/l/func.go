@@ -4,6 +4,8 @@ import (
 	"flag"
 	"net/url"
 	"strings"
+
+	"golang.org/x/exp/constraints"
 )
 
 // func Emergency(e Z)     { log.Fatal().EmbedObject(e).Send() }
@@ -88,6 +90,31 @@ func IndexSlice[S ~[]E, E comparable, M map[E]int](inbound S) (outbound M) {
 		outbound[b] = a
 	}
 	return
+}
+
+// CompareSlices compares slices with constraints.Ordered values
+//
+//	 slice's size diff will be ignored (treated as equivalence)
+//
+//		left == right = 0
+//		left > right = 1
+//		left < right = -1
+func CompareSlices[S ~[]E, E interface{ constraints.Ordered }](left S, right S) int {
+	for a, b := range left[:func() int {
+		switch {
+		case len(left) > len(right):
+			return len(right)
+		}
+		return len(left)
+	}()] {
+		switch {
+		case b > right[a]:
+			return 1
+		case b < right[a]:
+			return -1
+		}
+	}
+	return 0
 }
 
 func StripErr(err error)                                 {}
