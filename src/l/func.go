@@ -125,7 +125,7 @@ func CompareSlices[S ~[]E, E interface{ constraints.Ordered }](left S, right S) 
 	return 0
 }
 
-func StripErr(err error)                      {}
+func StripErr(err error)                      { return }
 func StripErr1[E any](inbound E, err error) E { return inbound }
 
 func FlagIsFlagExist(name string) (outbound bool) {
