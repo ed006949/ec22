@@ -50,6 +50,8 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 	}
 
 	var (
+		key         string
+		value       string
 		walkDirFunc = func(name string, dirEntry fs.DirEntry, fnErr error) (err error) {
 			switch {
 			case fnErr != nil:
@@ -63,24 +65,40 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 				switch {
 				case strings.HasSuffix(name, "test.xml"):
 				case strings.HasSuffix(name, ".xml"):
-					var (
-						interimXML = new(io_jnp.Juniper_vSRX_22)
-					)
-
 					switch data, err = vfsDB.VFS.ReadFile(name); {
 					case err != nil:
 						return
 					}
 
-					switch err = xml.Unmarshal(data, interimXML); {
-					case err != nil:
-						return
+					switch key {
+					case "var":
+						var (
+							interimXML = new(Environment)
+						)
+						switch err = xml.Unmarshal(data, interimXML); {
+						case err != nil:
+							return
+						}
+
+						switch data, err = xml.MarshalIndent(interimXML, "", "\t"); {
+						case err != nil:
+							return
+						}
+					case "tmp":
+						var (
+							interimXML = new(io_jnp.Juniper_vSRX_22)
+						)
+						switch err = xml.Unmarshal(data, interimXML); {
+						case err != nil:
+							return
+						}
+
+						switch data, err = xml.MarshalIndent(interimXML, "", "\t"); {
+						case err != nil:
+							return
+						}
 					}
 
-					switch data, err = xml.MarshalIndent(interimXML, "", "\t"); {
-					case err != nil:
-						return
-					}
 					data = append([]byte(xml.Header), data...)
 
 					switch err = os.WriteFile("./tmp/test.xml", data, avfs.DefaultFilePerm); {
@@ -99,9 +117,8 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 			return
 		}
 	)
-	for _, d := range vfsDB.List {
-
-		switch err = vfsDB.VFS.WalkDir(d, walkDirFunc); {
+	for key, value = range vfsDB.List {
+		switch err = vfsDB.VFS.WalkDir(value, walkDirFunc); {
 		case err != nil:
 			return
 		}
