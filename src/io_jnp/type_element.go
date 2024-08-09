@@ -1,12 +1,10 @@
 package io_jnp
 
 import (
-	"time"
+	"ec22/src/l"
 )
 
 type TrueIfExists bool
-type SiValue uint
-type TimeZoneValue time.Location
 
 // type MinVersionValue string
 
@@ -22,7 +20,7 @@ type IsExists *struct {
 }
 type SiInt *struct {
 	ConfigElementFlags
-	Value SiValue `xml:",chardata"`
+	Value l.SiUint `xml:",chardata"`
 }
 type Int *struct {
 	ConfigElementFlags
@@ -46,7 +44,7 @@ type Password *struct {
 }
 type TimeZone *struct {
 	ConfigElementFlags
-	Value TimeZoneValue `xml:",chardata"`
+	Value l.TimeZone `xml:",chardata"`
 }
 type SSHPubKey *struct {
 	ConfigElementFlags
