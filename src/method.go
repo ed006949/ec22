@@ -5,8 +5,6 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
-	"regexp"
-	"strconv"
 	"strings"
 
 	"github.com/avfs/avfs"
@@ -15,39 +13,6 @@ import (
 	"ec22/src/io_vfs"
 	"ec22/src/l"
 )
-
-func (r *Version) UnmarshalText(text []byte) error {
-	for _, b := range regexp.MustCompile(`\.`).Split(string(text), -1) {
-		switch value, err := strconv.Atoi(b); {
-		case err != nil:
-			return err
-		default:
-			*r = *r*1000 + Version(value)
-		}
-	}
-	return nil
-}
-func (r *Version) MarshalText() (outbound []byte, err error) {
-	var (
-		interim = *r
-		// to use delim-style op or not to use delim-style op ....
-	)
-	for {
-		var (
-			b = interim % 1000
-		)
-		interim /= 1000
-
-		switch {
-		case interim == 0 && b == 0:
-			return
-		case len(outbound) == 0:
-			outbound = append([]byte(strconv.Itoa(int(b))), outbound...)
-		case len(outbound) > 0:
-			outbound = append([]byte(strconv.Itoa(int(b))+"."), outbound...)
-		}
-	}
-}
 
 func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 	var (
