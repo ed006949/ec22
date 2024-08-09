@@ -9,7 +9,7 @@ import (
 
 // ApplyGroup         Names  `xml:"apply_group"`
 
-type BuiltInElements struct {
+type BuiltInZones struct {
 	RIName      string
 	ZoneName    string
 	Description string

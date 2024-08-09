@@ -1,7 +1,7 @@
 package main
 
 var (
-	SpecialZones = []BuiltInElements{
+	SpecialZones = []BuiltInZones{
 		{
 			RIName:      "",
 			ZoneName:    "functional-zone",
@@ -18,7 +18,7 @@ var (
 			RIName:      "mgmt_junos",
 			ZoneName:    "",
 			Description: "MANAGEMENT-INSTANCE",
-			IF:          nil,
+			IF:          []string{"fxp0"},
 		},
 		{
 			RIName:      "",

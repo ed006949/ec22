@@ -91,6 +91,15 @@ func IndexSlice[S ~[]E, E comparable, M map[E]int](inbound S) (outbound M) {
 	}
 	return
 }
+func FindSliceElement[S ~[]E, E comparable](inbound S, element E) (outbound bool) {
+	for _, b := range inbound {
+		switch {
+		case b == element:
+			return true
+		}
+	}
+	return
+}
 
 // CompareSlices compares slices with constraints.Ordered values
 //
