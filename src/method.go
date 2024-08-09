@@ -30,7 +30,7 @@ func (r *Version) UnmarshalText(text []byte) error {
 func (r *Version) MarshalText() (outbound []byte, err error) {
 	var (
 		interim = *r
-		// delim   string
+		// to use delim-style op or not to use delim-style op ....
 	)
 	for {
 		var (
@@ -44,12 +44,8 @@ func (r *Version) MarshalText() (outbound []byte, err error) {
 		case len(outbound) == 0:
 			outbound = append([]byte(strconv.Itoa(int(b))), outbound...)
 		case len(outbound) > 0:
-			// delim = "."
 			outbound = append([]byte(strconv.Itoa(int(b))+"."), outbound...)
 		}
-
-		// outbound = append([]byte(strconv.Itoa(int(b))+delim), outbound...)
-		// delim = "."
 	}
 }
 
