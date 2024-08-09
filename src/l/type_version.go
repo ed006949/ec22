@@ -41,3 +41,14 @@ func (r *Version) MarshalText() (outbound []byte, err error) {
 		}
 	}
 }
+func (r *Version) Uint(text []byte) error {
+	for _, b := range regexp.MustCompile(`\.`).Split(string(text), -1) {
+		switch value, err := strconv.Atoi(b); {
+		case err != nil:
+			return err
+		default:
+			*r = *r*VersionDenominator + Version(value)
+		}
+	}
+	return nil
+}

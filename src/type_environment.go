@@ -90,8 +90,8 @@ type SecurityPolicyGlobal []struct {
 }
 
 type Environment struct {
-	XMLName xml.Name /*`xml:"conf"`*/
-	Version string   `xml:"version,attr"`
+	XMLName xml.Name  /*`xml:"conf"`*/
+	Version l.Version `xml:"version,attr"`
 	ID
 
 	FamilyDefault string `xml:"family_default,attr"`
