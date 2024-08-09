@@ -1,6 +1,6 @@
 module ec22
 
-go 1.22.5
+go 1.22.6
 
 require (
 	github.com/ProtonMail/go-crypto v1.0.0
@@ -32,6 +32,6 @@ require (
 	github.com/xanzy/ssh-agent v0.3.3 // indirect
 	golang.org/x/crypto v0.26.0 // indirect
 	golang.org/x/net v0.28.0 // indirect
-	golang.org/x/sys v0.23.0 // indirect
+	golang.org/x/sys v0.24.0 // indirect
 	gopkg.in/warnings.v0 v0.1.2 // indirect
 )

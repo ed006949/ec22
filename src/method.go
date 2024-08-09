@@ -85,8 +85,6 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 							return
 						}
 
-						return
-
 					case "tmp":
 						var (
 							interimXML = new(io_jnp.Juniper_vSRX_22)
@@ -107,7 +105,7 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 
 					data = append([]byte(xml.Header), data...)
 
-					switch err = os.WriteFile("./tmp/test.xml", data, avfs.DefaultFilePerm); {
+					switch err = os.WriteFile(name, data, avfs.DefaultFilePerm); {
 					case err != nil:
 						return
 					}

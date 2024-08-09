@@ -10,7 +10,8 @@ build:
 	GOOS=freebsd GOARCH=amd64 go build -ldflags="-s -w" -trimpath -o "./bin/${NAME}-freebsd-amd64" ./src/*.go
 
 clean:
-	-gh auth logout
+#	-gh auth logout
+#	gh auth login --with-token < ~/.git_token
 	-go clean -i -r -x -cache -testcache -modcache -fuzzcache
 	-rm -v go.mod
 	-rm -v go.sum
