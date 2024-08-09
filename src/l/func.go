@@ -100,13 +100,12 @@ func IndexSlice[S ~[]E, E comparable, M map[E]int](inbound S) (outbound M) {
 //		left > right = 1
 //		left < right = -1
 func CompareSlices[S ~[]E, E interface{ constraints.Ordered }](left S, right S) int {
-	for a, b := range left[:func() int {
+	for a, b := range left {
 		switch {
-		case len(left) > len(right):
-			return len(right)
+		case a >= len(right):
+			return 0
 		}
-		return len(left)
-	}()] {
+
 		switch {
 		case b > right[a]:
 			return 1
@@ -117,8 +116,8 @@ func CompareSlices[S ~[]E, E interface{ constraints.Ordered }](left S, right S) 
 	return 0
 }
 
-func StripErr(err error)                                 {}
-func StripErr1[E any](inbound E, err error) (outbound E) { return inbound }
+func StripErr(err error)                      {}
+func StripErr1[E any](inbound E, err error) E { return inbound }
 
 func FlagIsFlagExist(name string) (outbound bool) {
 	flag.Visit(func(fn *flag.Flag) {

@@ -32,13 +32,6 @@ func main() {
 		}
 	)
 
-	var (
-		a = []uint{10, 20, 30, 40, 50}
-		b = []uint{10, 20, 30, 40}
-		c = l.CompareSlices(a, b)
-	)
-
-	_ = c
 	switch err = xmlConfig.load(vfsDB); {
 	case err != nil:
 		flag.PrintDefaults()
