@@ -3,9 +3,10 @@ package io_jnp
 import (
 	"encoding/xml"
 	"regexp"
+	"strconv"
 	"time"
 
-	"github.com/docker/go-units"
+	"ec22/src/l"
 )
 
 func (r *TrueIfExists) UnmarshalXMLAttr(attr xml.Attr) error {
@@ -29,18 +30,43 @@ func (r *TrueIfExists) MarshalXMLAttr(name xml.Name) (xml.Attr, error) {
 	}
 }
 
-func (r *SiIntValue) UnmarshalText(text []byte) error {
-	switch value, err := units.FromHumanSize(string(text)); {
-	case err != nil:
-		return err
-	default:
-		*r = SiIntValue(value)
-		return nil
+func (r *SiValue) UnmarshalText(text []byte) error {
+	var (
+		interim []byte
+		element byte
+	)
+
+	for _, element = range text {
+		switch {
+		case '0' <= element && element <= '9':
+			interim = append(interim, element)
+			continue
+		}
+		break
 	}
+
+	*r = SiValue(l.StripErr1(strconv.ParseUint(string(interim), 10, 0)))
+	switch string(element) { // kMGTPE
+	case "k":
+		*r = *r << 10
+	case "M":
+		*r = *r << 20
+	case "G":
+		*r = *r << 30
+	case "T":
+		*r = *r << 40
+	case "P":
+		*r = *r << 50
+	case "E":
+		*r = *r << 60
+	}
+
+	return nil
 }
-func (r *SiIntValue) MarshalText() ([]byte, error) {
-	return []byte(units.HumanSize(float64(*r))), nil
-}
+
+// func (r *SiValue) MarshalText() ([]byte, error) {
+// 	return []byte(strconv.Itoa(int(*r))), nil
+// }
 
 func (r *TimeZoneValue) UnmarshalText(text []byte) error {
 	var (

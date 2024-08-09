@@ -5,7 +5,7 @@ import (
 )
 
 type TrueIfExists bool
-type SiIntValue int
+type SiValue uint
 type TimeZoneValue time.Location
 
 // type MinVersionValue string
@@ -22,7 +22,7 @@ type IsExists *struct {
 }
 type SiInt *struct {
 	ConfigElementFlags
-	Value SiIntValue `xml:",chardata"`
+	Value SiValue `xml:",chardata"`
 }
 type Int *struct {
 	ConfigElementFlags

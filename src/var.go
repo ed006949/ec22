@@ -1,7 +1,12 @@
 package main
 
 var (
-	SpecialZones = []BuiltInZones{
+	SpecialZones = []struct {
+		RIName      string
+		ZoneName    string
+		Description string
+		IF          []string
+	}{
 		{
 			RIName:      "",
 			ZoneName:    "functional-zone",

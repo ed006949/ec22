@@ -4,21 +4,21 @@ import (
 	"encoding/xml"
 )
 
-// Juniper - Junos map
-type Juniper struct {
-	EX struct {
-	}
-	SRX struct {
-		V12_1 struct{ Conf *Juniper_vSRX_22 }
-		V12_4 struct{ Conf *Juniper_vSRX_22 }
-		V20   struct{ Conf *Juniper_vSRX_22 }
-		V22   struct{ Conf *Juniper_vSRX_22 }
-	}
-	VSRX struct {
-		V20 struct{ Conf *Juniper_vSRX_22 }
-		V22 struct{ Conf *Juniper_vSRX_22 }
-	}
-}
+// // Juniper - Junos map
+// type Juniper struct {
+// 	EX struct {
+// 	}
+// 	SRX struct {
+// 		V12_1 struct{ Conf *Juniper_vSRX_22 }
+// 		V12_4 struct{ Conf *Juniper_vSRX_22 }
+// 		V20   struct{ Conf *Juniper_vSRX_22 }
+// 		V22   struct{ Conf *Juniper_vSRX_22 }
+// 	}
+// 	VSRX struct {
+// 		V20 struct{ Conf *Juniper_vSRX_22 }
+// 		V22 struct{ Conf *Juniper_vSRX_22 }
+// 	}
+// }
 
 type Juniper_vSRX_22 struct {
 	ConfigElementFlags

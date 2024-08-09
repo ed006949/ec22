@@ -9,13 +9,6 @@ import (
 
 // ApplyGroup         Names  `xml:"apply_group"`
 
-type BuiltInZones struct {
-	RIName      string
-	ZoneName    string
-	Description string
-	IF          []string
-}
-
 type NameDesc struct {
 	Name        string `xml:"name,attr"`
 	Description string `xml:"description,attr"`
