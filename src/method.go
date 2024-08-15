@@ -76,6 +76,9 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 							interimXML = new(Environment)
 						)
 						switch err = xml.Unmarshal(data, interimXML); {
+						case err != nil && err.Error() == "EOF":
+							l.Z{l.M: name, l.E: err}.Warning()
+							return nil
 						case err != nil:
 							return
 						}
@@ -90,6 +93,9 @@ func (r *xmlConf) load(vfsDB *io_vfs.VFSDB) (err error) {
 							interimXML = new(io_jnp.Juniper_vSRX_22)
 						)
 						switch err = xml.Unmarshal(data, interimXML); {
+						case err != nil && err.Error() == "EOF":
+							l.Z{l.M: name, l.E: err}.Warning()
+							return nil
 						case err != nil:
 							return
 						}

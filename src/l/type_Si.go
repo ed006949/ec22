@@ -10,41 +10,47 @@ type SiUint uint
 //
 //		10 bits per unit
 //
-//	 FIXME no overload checks!
+//	 FIXME no overload checks - result must be >= 1<<shift
 func (r *SiUint) UnmarshalText(text []byte) error {
 	var (
 		interim []byte
-		element byte
 	)
 
-	for _, element = range text {
-		switch {
-		case '0' <= element && element <= '9':
-			interim = append(interim, element)
+	for _, b := range text {
+		switch b {
+		case '0', '1', '2', '3', '4', '5', '6', '7', '8', '9':
+			interim = append(interim, b)
 			continue
 		}
 		break
 	}
 
+	switch {
+	case len(interim) == 0:
+		return nil
+	}
+
 	*r = SiUint(StripErr1(strconv.ParseUint(string(interim), 10, 0)))
-	switch string(element) { // kMGTPE
-	case "k":
-		*r = *r << 10
-	case "M":
-		*r = *r << 20
-	case "G":
-		*r = *r << 30
-	case "T":
-		*r = *r << 40
-	case "P":
-		*r = *r << 50
-	case "E":
-		*r = *r << 60
+
+	for _, b := range text[len(interim):] {
+		switch b {
+		case ' ':
+			continue
+		case 'k':
+			*r <<= 10
+		case 'M':
+			*r <<= 20
+		case 'G':
+			*r <<= 30
+		case 'T':
+			*r <<= 40
+		case 'P':
+			*r <<= 50
+		case 'E':
+			*r <<= 60
+		}
+		break
 	}
 
 	return nil
 }
-
-// func (r *SiUint) MarshalText() ([]byte, error) {
-// 	return []byte(strconv.Itoa(int(*r))), nil
-// }
