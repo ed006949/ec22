@@ -10,7 +10,7 @@ type SiUint uint
 //
 //		10 bits per unit
 //
-//	 FIXME no overload checks - result must be >= 1<<shift
+//	 WARNING no overload checks
 func (r *SiUint) UnmarshalText(text []byte) error {
 	var (
 		interim []byte
