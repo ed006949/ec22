@@ -3,10 +3,8 @@ module ec22
 go 1.22.6
 
 require (
-	github.com/ProtonMail/go-crypto v1.0.0
+	github.com/ProtonMail/go-crypto v1.1.6
 	github.com/avfs/avfs v0.33.0
-	github.com/docker/go-units v0.5.0
-	github.com/dustin/go-humanize v1.0.1
 	github.com/fatih/structs v1.1.0
 	github.com/go-git/go-git/v5 v5.12.0
 	github.com/go-ini/ini v1.67.0
